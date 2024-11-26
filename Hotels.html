@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotels - Travel Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .hotels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .hotel-card {
+            background: var(--white-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .hotel-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hotel-details {
+            padding: 1.5rem;
+        }
+
+        .hotel-name {
+            font-size: 1.25rem;
+            color: var(--title-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .hotel-price {
+            font-size: 1.5rem;
+            color: var(--first-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .hotel-rating {
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--first-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .book-btn:hover {
+            background: var(--first-color-alt);
+        }
+
+        .filters {
+            padding: 1rem 2rem;
+            background: var(--white-color);
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            padding: 0.5rem;
+            border: 1px solid var(--text-color-light);
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">Travel Explorer</a>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="index.html" class="nav__link">Home</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="flights.html" class="nav__link">Flights</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="login.html" class="nav__link">Login</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="signup.html" class="nav__link">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="filters">
+            <input type="text" class="filter-input" placeholder="Search hotels..." oninput="filterHotels(this.value)">
+            <select class="filter-input" onchange="filterByPrice(this.value)">
+                <option value="">Price Range</option>
+                <option value="0-100">$0 - $100</option>
+                <option value="100-200">$100 - $200</option>
+                <option value="200+">$200+</option>
+            </select>
+            <select class="filter-input" onchange="filterByRating(this.value)">
+                <option value="">Rating</option>
+                <option value="5">5 Stars</option>
+                <option value="4">4+ Stars</option>
+                <option value="3">3+ Stars</option>
+            </select>
+        </div>
+
+        <div class="hotels-grid" id="hotelsGrid">
+            <!-- Hotel cards will be dynamically added here -->
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        // Sample hotel data
+        const hotels = [
+            {
+                name: "Luxury Beach Resort",
+                price: 299,
+                rating: 5,
+                images: [
+                    "assets/img/hotel-1-1.jpg",
+                    "assets/img/hotel-1-2.jpg",
+                    "assets/img/hotel-1-3.jpg"
+                ],
+                location: "Maldives"
+            },
+            {
+                name: "Mountain View Lodge",
+                price: 149,
+                rating: 4,
+                images: [
+                    "assets/img/hotel-2-1.jpg",
+                    "assets/img/hotel-2-2.jpg"
+                ],
+                location: "Swiss Alps"
+            },
+            {
+                name: "City Center Hotel",
+                price: 89,
+                rating: 3,
+                images: [
+                    "assets/img/hotel-3-1.jpg",
+                    "assets/img/hotel-3-2.jpg"
+                ],
+                location: "New York"
+            }
+        ];
+
+        function createHotelCard(hotel) {
+            const card = document.createElement('div');
+            card.className = 'hotel-card';
+            
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'hotel-image-container swiper';
+            
+            const swiperWrapper = document.createElement('div');
+            swiperWrapper.className = 'swiper-wrapper';
+            
+            hotel.images.forEach(image => {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                slide.innerHTML = `<img src="${image}" alt="${hotel.name}">`;
+                swiperWrapper.appendChild(slide);
+            });
+            
+            imageContainer.appendChild(swiperWrapper);
+            
+            const details = document.createElement('div');
+            details.className = 'hotel-details';
+            details.innerHTML = `
+                <h3 class="hotel-name">${hotel.name}</h3>
+                <div class="hotel-price">$${hotel.price}/night</div>
+                <div class="hotel-rating">${'★'.repeat(hotel.rating)}${'☆'.repeat(5-hotel.rating)}</div>
+                <p>${hotel.location}</p>
+                <button class="book-btn" onclick="bookHotel('${hotel.name}')">Book Now</button>
+            `;
+            
+            card.appendChild(imageContainer);
+            card.appendChild(details);
+            
+            return card;
+        }
+
+        function initializeHotels() {
+            const grid = document.getElementById('hotelsGrid');
+            hotels.forEach(hotel => {
+                grid.appendChild(createHotelCard(hotel));
+            });
+            
+            // Initialize Swiper
+            const swipers = document.querySelectorAll('.swiper');
+            swipers.forEach(swiper => {
+                new Swiper(swiper, {
+                    loop: true,
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    },
+                });
+            });
+        }
+
+        function filterHotels(query) {
+            const grid = document.getElementById('hotelsGrid');
+            grid.innerHTML = '';
+            
+            const filteredHotels = hotels.filter(hotel => 
+                hotel.name.toLowerCase().includes(query.toLowerCase()) ||
+                hotel.location.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            filteredHotels.forEach(hotel => {
+                grid.appendChild(createHotelCard(hotel));
+            });
+        }
+
+        function filterByPrice(range) {
+            const grid = document.getElementById('hotelsGrid');
+            grid.innerHTML = '';
+            
+            let filteredHotels = hotels;
+            if (range) {
+                const [min, max] = range.split('-').map(Number);
+                filteredHotels = hotels.filter(hotel => 
+                    max ? (hotel.price >= min && hotel.price < max) : hotel.price >= min
+                );
+            }
+            
+            filteredHotels.forEach(hotel => {
+                grid.appendChild(createHotelCard(hotel));
+            });
+        }
+
+        function filterByRating(rating) {
+            const grid = document.getElementById('hotelsGrid');
+            grid.innerHTML = '';
+            
+            const filteredHotels = rating ? 
+                hotels.filter(hotel => hotel.rating >= Number(rating)) : 
+                hotels;
+            
+            filteredHotels.forEach(hotel => {
+                grid.appendChild(createHotelCard(hotel));
+            });
+        }
+
+        function bookHotel(hotelName) {
+            // Here you would typically handle the booking process
+            alert(`Booking ${hotelName}... Please log in to continue.`);
+            window.location.href = 'login.html';
+        }
+
+        // Initialize hotels when the page loads
+        document.addEventListener('DOMContentLoaded', initializeHotels);
+    </script>
+</body>
+</html>
