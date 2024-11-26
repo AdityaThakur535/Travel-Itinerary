@@ -1,13 +1,8 @@
-/*=============== GOOGLE FONTS ===============*/
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@500;600;700&display=swap");
-
-/*=============== VARIABLES CSS ===============*/
 :root {
   --header-height: 3rem;
 
-  /*========== Colors ==========*/
-  /* Change favorite color to match images */
-  /*Green dark 190 - Green 171 - Grren Blue 200*/
+  
   --hue-color: 190;
 
   /* HSL color mode */
@@ -23,7 +18,7 @@
   --scroll-bar-color: hsl(var(--hue-color), 12%, 90%);
   --scroll-thumb-color: hsl(var(--hue-color), 12%, 75%);
 
-  /*========== Font and typography ==========*/
+  /* Font and typography */
   --body-font: 'Open Sans', sans-serif;
   --title-font: 'Raleway', sans-serif;
   --biggest-font-size: 2.5rem;
@@ -34,11 +29,11 @@
   --small-font-size: .813rem;
   --smaller-font-size: .75rem;
 
-  /*========== Font weight ==========*/
+  /* Font weight */
   --font-medium: 500;
   --font-semi-bold: 600;
 
-  /*========== Margenes Bottom ==========*/
+  /* Margenes Bottom */
   --mb-0-25: .25rem;
   --mb-0-5: .5rem;
   --mb-0-75: .75rem;
@@ -48,11 +43,11 @@
   --mb-2: 2rem;
   --mb-2-5: 2.5rem;
 
-  /*========== z index ==========*/
+  /*  index */
   --z-tooltip: 10;
   --z-fixed: 100;
 
-  /*========== Hover overlay ==========*/
+  /* Hover overlay */
   --img-transition: .3s;
   --img-hidden: hidden;
   --img-scale: scale(1.1);
@@ -70,9 +65,7 @@
   }
 }
 
- 
-
-/*=============== BASE ===============*/
+/*BASE */
 * {
   box-sizing: border-box;
   padding: 0;
@@ -130,7 +123,7 @@ input {
   overflow-x: hidden;
 }
 
-/*=============== REUSABLE CSS CLASSES ===============*/
+/* REUSABLE CSS CLASSES */
 .section {
   padding: 4.5rem 0 2.5rem;
 }
@@ -154,7 +147,7 @@ input {
   gap: 1.5rem;
 }
 
-/*=============== HEADER ===============*/
+/* HEADER */
 .header {
   width: 100%;
   position: fixed;
@@ -164,7 +157,7 @@ input {
   background-color: transparent;
 }
 
-/*=============== NAV ===============*/
+/* NAV */
 .nav {
   height: var(--header-height);
   display: flex;
@@ -228,12 +221,12 @@ input {
   cursor: pointer;
 }
 
-/* show menu */
+
 .show-menu {
   right: 0;
 }
 
-/* Change background header */
+
 .scroll-header {
   background-color: var(--body-color);
   box-shadow: 0 0 4px rgba(14, 55, 63, 0.15);
@@ -244,7 +237,7 @@ input {
   color: var(--title-color);
 }
 
-/* Active link */
+
 .active-link {
   position: relative;
   color: var(--title-color);
@@ -260,7 +253,7 @@ input {
   left: 0;
 }
 
-/*=============== HOME ===============*/
+/* HOME */
 .home__img {
   position: absolute;
   top: 0;
@@ -344,7 +337,7 @@ input {
   transform: var(--img-scale);
 }
 
-/*=============== BUTTONS ===============*/
+/* BUTTONS */
 .button {
   display: inline-block;
   background-color: var(--first-color);
@@ -373,7 +366,7 @@ input {
   background: none;
 }
 
-/*=============== ABOUT ===============*/
+/* ABOUT */
 .about__data {
   text-align: center;
 }
@@ -451,11 +444,35 @@ input {
   font-size: 1rem;
 }
 
-/*=============== DISCOVER ===============*/
+/* DISCOVER */
+.discover__container {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 1rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--first-color) var(--body-color);
+}
+
+.discover__container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.discover__container::-webkit-scrollbar-track {
+    background: var(--body-color);
+    border-radius: 4px;
+}
+
+.discover__container::-webkit-scrollbar-thumb {
+    background: var(--first-color);
+    border-radius: 4px;
+}
+
 .discover__card {
-  position: relative;
-  width: 200px;
-  overflow: var(--img-hidden);
+    flex: 0 0 auto;
+    width: 280px;
+    position: relative;
+    overflow: hidden;
 }
 
 .discover__data {
@@ -480,11 +497,14 @@ input {
 }
 
 .discover__img {
-  transition: var(--img-transition);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
 }
 
-.discover__img:hover {
-  transform: var(--img-scale);
+.discover__card:hover .discover__img {
+  transform: scale(1.1);
 }
 
 .swiper-container-3d .swiper-slide-shadow-left,
@@ -492,85 +512,7 @@ input {
   background-image: none;
 }
 
-hero-section {
-  text-align: center;
-  background: url('https://source.unsplash.com/1600x900/?travel') no-repeat center center/cover;
-  height: 60vh;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.hero-section h1 {
-  font-size: 3rem;
-}
-
-.search-bar input {
-  padding: 10px;
-  width: 300px;
-  border:none;
-  margin-right: 10px;
-}
-
-.search-bar button {
-  padding: 10px;
-  background-color: #333;
-  color: #fff;
-  border: none;
-}
-
-.featured-itineraries {
-  padding: 2rem;
-  text-align: center;
-}
-
-.featured-itineraries h2 {
-  margin-bottom: 1.5rem;
-}
-
-.itinerary-cards {
-  display: flex;
-  justify-content: space-around;
-}
-
-.card {
-  background-color: #f4f4f4;
-  padding: 1rem;
-  width: 30%;
-  border-radius: 5px;
-}
-
-.planner-section {
-  padding: 2rem;
-  text-align: center;
-}
-
-.planner-section form {
-  margin-bottom: 2rem;
-}
-
-.planner-section form input, 
-.planner-section form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.about-section {
-  padding: 2rem;
-  background-color: #f4f4f4;
-  text-align: center;
-}
-
-footer {
-  padding: 1rem;
-  text-align: center;
-  background-color: #333;
-  color: #fff;
-}
-
-/*=============== EXPERIENCE ===============*/
+/* EXPERIENCE */
 .experience__container {
   row-gap: 2.5rem;
   justify-content: center;
@@ -626,27 +568,39 @@ footer {
 }
 
 
-/*=============== PLACES ===============*/
-.place__card, .place__img {
-  height: 230px;
+/* PLACES */
+.place__container {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 1rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--first-color) var(--body-color);
 }
 
-.place__container {
-  grid-template-columns: repeat(2, max-content);
-  justify-content: center;
+.place__container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.place__container::-webkit-scrollbar-track {
+    background: var(--body-color);
+    border-radius: 4px;
+}
+
+.place__container::-webkit-scrollbar-thumb {
+    background: var(--first-color);
+    border-radius: 4px;
 }
 
 .place__card {
-  position: relative;
-  overflow: var(--img-hidden);
+    flex: 0 0 auto;
+    width: 280px;
+    position: relative;
+    overflow: hidden;
 }
 
-.place__card:hover .place__img {
-  transform: var(--img-scale);
-}
-
-.place__img {
-  transition: var(--img-transition);
+.place__card, .place__img {
+  height: 230px;
 }
 
 .place__content, .place__title {
@@ -696,13 +650,28 @@ footer {
 
 .place__button {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  padding: .75rem 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 50%;
 }
 
+.place__button:hover {
+  background-color: var(--first-color-alt);
+}
 
-/*=============== FOOTER ===============*/
+.place__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.place__card:hover .place__img {
+  transform: scale(1.1);
+}
+
+/* FOOTER */
 .footer__container {
   row-gap: 5rem;
 }
@@ -769,7 +738,7 @@ footer {
   color: var(--text-color);
 }
 
-/*========== SCROLL UP ==========*/
+
 .scrollup {
   position: fixed;
   right: 1rem;
@@ -792,12 +761,12 @@ footer {
   font-size: 1.2rem;
 }
 
-/* Show scroll */
+
 .show-scroll {
   bottom: 5rem;
 }
 
-/*=============== SCROLL BAR ===============*/
+
 ::-webkit-scrollbar {
   width: .60rem;
   background-color: var(--scroll-bar-color);
@@ -811,8 +780,7 @@ footer {
   background-color: var(--text-color-light);
 }
 
-/*=============== MEDIA QUERIES ===============*/
-/* For small devices */
+
 @media screen and (max-width: 340px) {
   .place__container {
     grid-template-columns: max-content;
@@ -837,7 +805,7 @@ footer {
   }
 }
 
-/* For medium devices */
+
 @media screen and (min-width: 568px) {
   .video__container {
     display: grid;
@@ -967,7 +935,7 @@ footer {
   }
 }
 
-/* For large devices */
+
 @media screen and (min-width: 1024px) {
   .container {
     margin-left: auto;
@@ -1041,7 +1009,7 @@ footer {
   }
 }
 
-/* For tall screens on mobiles y desktop*/
+
 @media screen and (min-height: 721px) {
   body {
     margin: 0;
@@ -1049,4 +1017,104 @@ footer {
   .home__container, .home__img {
     height: 640px;
   }
+}
+.auth__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem 1.5rem;
+}
+
+.auth__box {
+    background-color: var(--white-color);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px hsla(var(--hue-color), 64%, 15%, .15);
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.auth__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.auth__group label {
+    color: var(--title-color);
+    font-weight: var(--font-semi-bold);
+    font-size: var(--normal-font-size);
+}
+
+.auth__input {
+    width: 100%;
+    background-color: var(--input-color);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    font-size: var(--normal-font-size);
+    color: var(--text-color);
+    font-family: var(--body-font);
+}
+
+.auth__input:focus {
+    box-shadow: 0 0 0 2px var(--first-color);
+}
+
+.auth__forgot {
+    text-align: right;
+}
+
+.auth__link {
+    color: var(--first-color);
+    font-weight: var(--font-semi-bold);
+    transition: 0.3s;
+}
+
+.auth__link:hover {
+    color: var(--first-color-alt);
+}
+
+.auth__text {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.button {
+    width: 100%;
+    padding: 1rem;
+    font-size: var(--normal-font-size);
+}
+
+/* Error styles */
+.auth__error {
+    color: #ff3860;
+    font-size: var(--small-font-size);
+    margin-top: 0.25rem;
+}
+
+.auth__input.error {
+    box-shadow: 0 0 0 2px #ff3860;
+}
+
+/* Success message */
+.auth__success {
+    color: #23d160;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 576px) {
+    .auth__box {
+        padding: 3rem;
+    }
 }
