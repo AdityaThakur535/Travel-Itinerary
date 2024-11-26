@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flights - Travel Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .flights-container {
+            padding: 2rem;
+        }
+
+        .search-form {
+            background: var(--white-color);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--title-color);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--text-color-light);
+            border-radius: 0.5rem;
+            font-size: var(--normal-font-size);
+        }
+
+        .search-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--first-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            align-self: end;
+        }
+
+        .search-btn:hover {
+            background: var(--first-color-alt);
+        }
+
+        .flight-card {
+            background: var(--white-color);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .airline-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .airline-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .flight-times {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: space-between;
+        }
+
+        .time-label {
+            font-size: 0.875rem;
+            color: var(--text-color-light);
+        }
+
+        .time {
+            font-size: 1.25rem;
+            color: var(--title-color);
+            font-weight: 600;
+        }
+
+        .duration {
+            text-align: center;
+            position: relative;
+        }
+
+        .duration::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -1rem;
+            right: -1rem;
+            height: 2px;
+            background: var(--text-color-light);
+            z-index: 1;
+        }
+
+        .duration span {
+            background: var(--white-color);
+            padding: 0 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .flight-price {
+            font-size: 1.5rem;
+            color: var(--first-color);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .book-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--first-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .book-btn:hover {
+            background: var(--first-color-alt);
+        }
+
+        .no-flights {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">Travel Explorer</a>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="index.html" class="nav__link">Home</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="hotels.html" class="nav__link">Hotels</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="login.html" class="nav__link">Login</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="signup.html" class="nav__link">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="flights-container">
+            <form class="search-form" onsubmit="searchFlights(event)">
+                <div class="form-group">
+                    <label for="from">From</label>
+                    <input type="text" id="from" required placeholder="City or Airport">
+                </div>
+                <div class="form-group">
+                    <label for="to">To</label>
+                    <input type="text" id="to" required placeholder="City or Airport">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="passengers">Passengers</label>
+                    <select id="passengers" required>
+                        <option value="1">1 Adult</option>
+                        <option value="2">2 Adults</option>
+                        <option value="3">3 Adults</option>
+                        <option value="4">4 Adults</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-btn">Search Flights</button>
+            </form>
+
+            <div id="flightResults">
+                <!-- Flight cards will be dynamically added here -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sample flight data
+        const flights = [
+            {
+                airline: "SkyWings",
+                logo: "assets/img/airline-1.png",
+                departure: "10:00 AM",
+                arrival: "12:30 PM",
+                duration: "2h 30m",
+                from: "New York",
+                to: "Los Angeles",
+                price: 299
+            },
+            {
+                airline: "Ocean Air",
+                logo: "assets/img/airline-2.png",
+                departure: "2:15 PM",
+                arrival: "5:45 PM",
+                duration: "3h 30m",
+                from: "London",
+                to: "Paris",
+                price: 199
+            },
+            {
+                airline: "Mountain Express",
+                logo: "assets/img/airline-3.png",
+                departure: "8:00 AM",
+                arrival: "9:30 AM",
+                duration: "1h 30m",
+                from: "Tokyo",
+                to: "Seoul",
+                price: 149
+            }
+        ];
+
+        function createFlightCard(flight) {
+            return `
+                <div class="flight-card">
+                    <div class="airline-info">
+                        <img src="${flight.logo}" alt="${flight.airline}" class="airline-logo">
+                        <div>${flight.airline}</div>
+                    </div>
+                    <div class="flight-times">
+                        <div>
+                            <div class="time-label">${flight.from}</div>
+                            <div class="time">${flight.departure}</div>
+                        </div>
+                        <div class="duration">
+                            <span>${flight.duration}</span>
+                        </div>
+                        <div>
+                            <div class="time-label">${flight.to}</div>
+                            <div class="time">${flight.arrival}</div>
+                        </div>
+                    </div>
+                    <div class="flight-price">
+                        $${flight.price}
+                    </div>
+                    <button class="book-btn" onclick="bookFlight('${flight.airline}', '${flight.from}', '${flight.to}')">
+                        Book Now
+                    </button>
+                </div>
+            `;
+        }
+
+        function searchFlights(event) {
+            event.preventDefault();
+            const from = document.getElementById('from').value;
+            const to = document.getElementById('to').value;
+            const date = document.getElementById('date').value;
+            
+            const resultsContainer = document.getElementById('flightResults');
+            resultsContainer.innerHTML = '';
+
+            // Filter flights based on search criteria
+            const filteredFlights = flights.filter(flight => 
+                flight.from.toLowerCase().includes(from.toLowerCase()) &&
+                flight.to.toLowerCase().includes(to.toLowerCase())
+            );
+
+            if (filteredFlights.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-flights">
+                        No flights found for your search criteria. Please try different dates or destinations.
+                    </div>
+                `;
+                return;
+            }
+
+            filteredFlights.forEach(flight => {
+                resultsContainer.innerHTML += createFlightCard(flight);
+            });
+        }
+
+        function bookFlight(airline, from, to) {
+            // Here you would typically handle the booking process
+            alert(`Booking flight with ${airline} from ${from} to ${to}... Please log in to continue.`);
+            window.location.href = 'login.html';
+        }
+
+        // Set minimum date to today
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+        dateInput.value = today;
+    </script>
+</body>
+</html>
